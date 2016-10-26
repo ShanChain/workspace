@@ -1,15 +1,18 @@
 #Version:0.0.1
 FROM ubuntu:14.04
-MAINTAINER snow "zxf@ifilmo.com"
-RUN apt-get update 
-RUN apt-get install wget -y && apt-get install xz-utils
+MAINTAINER snow "xuefeng.zhao@shanchain.com"
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+RUN apt-get update && \
+	apt-get install -y wget xz-utils 
 RUN cd /opt && \
 	wget https://nodejs.org/dist/v4.4.7/node-v4.4.7-linux-x64.tar.xz && \
 	xz -d node-v4.4.7-linux-x64.tar.xz && \ 
 	tar -xvf node-v4.4.7-linux-x64.tar && \
 	rm -f node-v4.4.7-linux-x64.tar 
-RUN ln -s /opt/node-v4.4.7-linux-x64/bin/node /usr/local/sbin/node
+RUN ln -s /opt/node-v4.4.7-linux-x64/bin/node /usr/local/sbin/
 RUN ln -s /opt/node-v4.4.7-linux-x64/bin/npm /usr/local/sbin/npm
+RUN npm install npm@3 -g
+
 RUN mkdir -p /usr/lib/jvm && \ 
 	cd /usr/lib/jvm && \
 	wget -c http://download.oracle.com/otn-pub/java/jdk/8u112-b15/jdk-8u112-linux-x64.tar.gz --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" && \
