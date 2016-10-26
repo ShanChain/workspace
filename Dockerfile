@@ -16,11 +16,17 @@ RUN mkdir -p /usr/lib/jvm && \
 	tar -xvf jdk-8u112-linux-x64.tar.gz && \
 	rm -f jdk-8u112-linux-x64.tar.gz && \
 	sudo ln -s jdk1.8.0_112 java-8 && \
-	cd ~ && \ 
 	sed -i '$a export JAVA_HOME=/usr/lib/jvm/java-8 \
 			export JRE_HOME=${JAVA_HOME}/jre \
 			export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib \
-			export PATH=${JAVA_HOME}/bin:$PATH' .bashrc
+			export PATH=${JAVA_HOME}/bin:$PATH' ~/.bashrc
 ENV JAVA_HOME /usr/lib/jvm/java-8
-RUN apt-get install scala -y
+
+RUN cd /opt && \
+	wget http://downloads.lightbend.com/scala/2.12.0-RC2/scala-2.12.0-RC2.tgz && \
+	tar -zxvf scala-2.12.0-RC2.tgz && \
+	rm -f scala-2.12.0-RC2.tgz && \
+	sed -i '$a export SCALA_HOME=/opt/scala-2.12.0-RC2 \
+			export PATH=${SCALA_HOME}/bin:$PATH' ~/.bashrc
+ENV SCALA_HOME /opt/scala-2.12.0-RC2
 EXPOSE 80
