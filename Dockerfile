@@ -3,7 +3,7 @@ FROM ubuntu:14.04
 MAINTAINER snow "xuefeng.zhao@shanchain.com"
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 RUN apt-get update && \
-	apt-get install -y wget xz-utils 
+	apt-get install -y wget xz-utils unzip
 RUN cd /opt && \
 	wget https://nodejs.org/dist/v4.4.7/node-v4.4.7-linux-x64.tar.xz && \
 	xz -d node-v4.4.7-linux-x64.tar.xz && \ 
@@ -32,4 +32,13 @@ RUN cd /opt && \
 	sed -i '$a export SCALA_HOME=/opt/scala-2.12.0-RC2 \
 			export PATH=${SCALA_HOME}/bin:$PATH' ~/.bashrc
 ENV SCALA_HOME /opt/scala-2.12.0-RC2
+
+RUN cd /opt && \
+	wget https://downloads.typesafe.com/typesafe-activator/1.3.12/typesafe-activator-1.3.12-minimal.zip && \
+	unzip typesafe-activator-1.3.12-minimal.zip && \
+	rm -f typesafe-activator-1.3.12-minimal.zip && \
+	ln -s /opt/activator-1.3.12-minimal/bin/activator /usr/local/sbin/activator && \
+	sed -i '$a export PATH=/usr/local/sbin/activator:$PATH' ~/.bashrc
+
+RUN source ~/.bashrc
 EXPOSE 80
